@@ -7,6 +7,7 @@ from io import BytesIO
 import re
 import base64
 import os
+from numpy import save,load
 
 app = Flask(__name__,template_folder="template")
 
@@ -61,6 +62,7 @@ def verify():
     image = np.asarray(image)
     print(image)
     image_embedding = get_embedding(image)
+    face_embedding=load('data.npy')
     print(image_embedding.shape,image_embedding)
     print(face_embedding.shape,face_embedding)
     res = findCosineDistance(image_embedding,face_embedding)
@@ -84,6 +86,8 @@ def get_embeddings():
     print(image)
     global face_embedding 
     face_embedding= get_embedding(image)
+    save('data.npy',face_embedding)
+    print(type(face_embedding))
     print('embeddings stored')
     return jsonify("face mapping stored")
     
